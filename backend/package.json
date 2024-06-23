@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "FitConnect Server Code",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js --ignore frontend",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix ../frontend",
+    "clientinstall": "npm install --prefix ../frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.4.3"
+  }
+}
