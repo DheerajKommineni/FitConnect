@@ -1,0 +1,54 @@
+.custom-btn {
+  background-color: #68c1f1;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-btn:hover {
+  background-color: #b8e1f7; /* Darker shade for hover */
+}
+
+.fullscreen-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0%);
+}
+
+.menu-content {
+  text-align: center;
+}
+
+.fullscreen-menu .nav-link {
+  color: white;
+  font-size: 1.5em;
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.fullscreen-menu .nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Style for close icon */
+.navbar-brand .svg-inline--fa {
+  cursor: pointer;
+  font-size: 1.5em;
+  margin-left: 10px; /* Adjust margin as needed */
+  color: black; /* Change color as needed */
+}
+
+.navbar-brand .svg-inline--fa:hover {
+  color: gray; /* Change hover color as needed */
+}
