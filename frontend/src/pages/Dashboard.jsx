@@ -7,7 +7,7 @@ import { FaUser, FaThLarge, FaTimes } from 'react-icons/fa';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const [token, setToken] = useContext(store);
+  const [xtoken, setXToken] = useContext(store);
   const [data, setData] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -16,12 +16,12 @@ const Dashboard = () => {
     axios
       .get('http://localhost:8000/dashboard', {
         headers: {
-          'x-token': token,
+          'x-token': xtoken,
         },
       })
       .then(res => setData(res.data))
       .catch(err => console.log(err));
-  }, [token]);
+  }, [xtoken]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,7 +31,7 @@ const Dashboard = () => {
     setIsMenuOpen(false);
   };
 
-  if (!token) {
+  if (!xtoken) {
     return <Navigate to="/login" />;
   }
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
                 <FaUser style={{ height: '30px', width: '30px' }} />
               </Nav.Link>
               <Nav.Link>
-                <button className="custom-btn" onClick={() => setToken(null)}>
+                <button className="custom-btn" onClick={() => setXToken(null)}>
                   Logout
                 </button>
               </Nav.Link>
