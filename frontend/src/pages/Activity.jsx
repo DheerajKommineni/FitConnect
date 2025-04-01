@@ -1,7 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
+// WORKING CODE
+
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import googleFitIcon from '../assets/Google-Fit.webp';
 import { store } from '../App';
 import axios from 'axios';
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  parseISO,
+  toDate,
+} from 'date-fns';
+import Chart from 'chart.js/auto'; // Import Chart.js
+import './Activity.css';
 
 const Activity = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +24,10 @@ const Activity = () => {
     gender: '',
     steps: '',
     distance: '',
+    caloriesExpended: '',
+    heartRate: '',
+    moveMinutes: '',
+    sleep: '',
   });
   const [dailyData, setDailyData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
@@ -21,22 +38,43 @@ const Activity = () => {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [editing, setEditing] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [isFullCalendar, setIsFullCalendar] = useState(false);
   const navigate = useNavigate();
+  const chartRef = useRef(null);
 
   const fetchFitData = async token => {
     try {
-      const response = await axios.get('http://localhost:8000/activity', {
+      const response = await axios.get('http://localhost:8000/api/activity', {
         headers: {
           'x-token': token,
         },
         withCredentials: true,
       });
 
-      const { userId, dailyData, monthlyData, ...fitnessData } = response.data;
+      const {
+        userId,
+        dailyData,
+        monthlyData,
+        totalSteps,
+        totalDistance,
+        totalCalories,
+        totalHeartRate,
+        totalMoveMinutes,
+        totalHeartPoints,
+        ...fitnessData
+      } = response.data;
+
       setFormData(prevData => ({
         ...prevData,
         ...fitnessData,
+        steps: totalSteps,
+        distance: totalDistance,
+        caloriesExpended: totalCalories,
+        heartRate: totalHeartRate,
+        moveMinutes: totalMoveMinutes,
+        heartPoints: totalHeartPoints,
       }));
+
       setDailyData(dailyData);
       setMonthlyData(monthlyData);
       setDataFetched(true);
@@ -128,19 +166,19 @@ const Activity = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const { age, weight, height, gender, steps, distance } = formData;
+      const { age, weight, height, gender } = formData;
+
+      const dataToSend = {
+        userId,
+        age,
+        weight,
+        height,
+        gender,
+      };
 
       await axios.post(
-        'http://localhost:8000/save-fitness-data',
-        {
-          userId,
-          age,
-          weight,
-          height,
-          gender,
-          sixMonthsSteps: steps,
-          sixMonthsDistance: distance,
-        },
+        'http://localhost:8000/update-fitness-info',
+        dataToSend,
         {
           headers: {
             'x-token': xToken,
@@ -148,51 +186,13 @@ const Activity = () => {
           },
         },
       );
-      alert('Fitness data saved successfully');
-      fetchFitData(xToken);
+      alert('Fitness info updated successfully');
+      fetchFitData(xToken); // Refresh data if needed
       setEditing(false);
     } catch (error) {
-      console.error('Error saving fitness data:', error);
-      setError('Error saving fitness data');
+      console.error('Error saving fitness info:', error);
+      setError('Error saving fitness info');
     }
-  };
-
-  const getCurrentMonthDates = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth(); // 0-indexed (July is 6)
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const dates = [];
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month, day);
-      const dateString = date.toISOString().split('T')[0];
-      dates.push(dateString);
-    }
-    return dates;
-  };
-
-  const fillMissingDailyData = dailyData => {
-    const fullDailyData = [];
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // 0-indexed (July is 6, +1 to get correct month)
-    const daysInMonth = new Date(year, now.getMonth() + 1, 0).getDate();
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = `${year}-${month}-${day.toString().padStart(2, '0')}`;
-      const existingData = dailyData.find(data => data.date === date);
-      // console.log('Date', date);
-      // console.log('Existing Data', existingData);
-
-      if (existingData) {
-        fullDailyData.push(existingData);
-      } else {
-        fullDailyData.push({ date, steps: 0, distance: 0 });
-      }
-    }
-    // console.log(fullDailyData);
-    return fullDailyData;
   };
 
   const renderField = (name, label, type = 'text') => {
@@ -200,73 +200,431 @@ const Activity = () => {
     const isInputVisible = editing;
 
     return (
-      <div key={name}>
-        <label>
+      <div key={name} style={{ marginBottom: '10px' }}>
+        <label
+          style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}
+        >
           {label}:
-          {isInputVisible ? (
+        </label>
+        {isInputVisible ? (
+          name === 'gender' ? (
+            <select
+              name={name}
+              value={value}
+              onChange={handleChange}
+              style={{
+                width: '200px',
+                padding: '8px',
+                borderRadius: '5px',
+                border: '1px solid #ccc',
+              }}
+            >
+              <option value="">Select Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          ) : (
             <input
               type={type}
               name={name}
               value={value}
               onChange={handleChange}
               placeholder={`Enter ${label}`}
+              style={{
+                width: '200px',
+                padding: '8px',
+                borderRadius: '5px',
+                border: '1px solid #ccc',
+              }}
             />
-          ) : (
-            <span>{value}</span>
-          )}
-        </label>
+          )
+        ) : (
+          <div
+            style={{
+              padding: '8px',
+              borderRadius: '5px',
+              border: '1px solid #ccc',
+              backgroundColor: '#f8f9fa',
+            }}
+          >
+            {value}
+          </div>
+        )}
       </div>
     );
   };
 
-  const filledDailyData = fillMissingDailyData(dailyData);
-  console.log('Filled Daily Data', filledDailyData);
+  const renderData = () => {
+    return (
+      <form onSubmit={handleSubmit} className="form-container">
+        <div className="form-wrapper">
+          <div className="form-grid-2x4">
+            <div className="form-grid-item">
+              {renderField('age', 'Age', 'number')}
+            </div>
+            <div className="form-grid-item">
+              {renderField('weight', 'Weight (kg)', 'number')}
+            </div>
+            <div className="form-grid-item">
+              {renderField('height', 'Height (ft)', 'number')}
+            </div>
+            <div className="form-grid-item">
+              {renderField('gender', 'Gender')}
+            </div>
+
+            {/* Conditional Rendering for Fitness Data */}
+            {formData.steps && (
+              <div className="form-grid-item">
+                <label
+                  style={{
+                    fontWeight: 'bold',
+                    display: 'block',
+                    marginBottom: '5px',
+                  }}
+                >
+                  Total Steps till date
+                </label>
+                <div
+                  style={{
+                    padding: '8px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    backgroundColor: '#f8f9fa',
+                  }}
+                >
+                  {formData.steps}
+                </div>
+              </div>
+            )}
+
+            {formData.distance && (
+              <div className="form-grid-item">
+                <label
+                  style={{
+                    fontWeight: 'bold',
+                    display: 'block',
+                    marginBottom: '5px',
+                  }}
+                >
+                  Total Distance till date
+                </label>
+                <div
+                  style={{
+                    padding: '8px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    backgroundColor: '#f8f9fa',
+                  }}
+                >
+                  {formData.distance}
+                </div>
+              </div>
+            )}
+
+            {formData.heartRate && (
+              <div className="form-grid-item">
+                <label
+                  style={{
+                    fontWeight: 'bold',
+                    display: 'block',
+                    marginBottom: '5px',
+                  }}
+                >
+                  Average Heart Rate
+                </label>
+                <div
+                  style={{
+                    padding: '8px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    backgroundColor: '#f8f9fa',
+                  }}
+                >
+                  {formData.heartRate}
+                </div>
+              </div>
+            )}
+
+            {formData.heartPoints && (
+              <div className="form-grid-item">
+                <label
+                  style={{
+                    fontWeight: 'bold',
+                    display: 'block',
+                    marginBottom: '5px',
+                  }}
+                >
+                  Total Heart Points
+                </label>
+                <div
+                  style={{
+                    padding: '8px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    backgroundColor: '#f8f9fa',
+                  }}
+                >
+                  {formData.heartPoints}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Buttons for Save, Cancel, and Edit */}
+          {editing ? (
+            <div className="button-group">
+              <button
+                type="submit"
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#007bff',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                }}
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditing(false)}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#dc3545',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                  marginLeft: '10px',
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#007bff',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+              }}
+            >
+              Edit
+            </button>
+          )}
+        </div>
+      </form>
+    );
+  };
+  const renderCalendarView = () => {
+    const today = new Date();
+    const start = startOfMonth(today);
+    const end = endOfMonth(today);
+    const days = eachDayOfInterval({ start, end });
+
+    const adjustToLocalDate = isoString => {
+      const date = new Date(isoString);
+      const localDate = new Date(
+        date.getTime() + date.getTimezoneOffset() * 60000,
+      );
+      return localDate;
+    };
+
+    return (
+      <div className="calendar-container">
+        <h2>Daily Activity</h2>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            gap: '5px',
+            textAlign: 'center',
+          }}
+        >
+          {days.map(day => {
+            const formattedDate = format(day, 'd'); // Format day number
+            const dailyRecord = dailyData.find(
+              record =>
+                format(adjustToLocalDate(record.date), 'd-M-yyyy') ===
+                format(day, 'd-M-yyyy'),
+            );
+
+            return (
+              <div
+                key={day}
+                style={{
+                  border: '1px solid #ccc',
+                  padding: '10px',
+                  backgroundColor: dailyRecord ? '#e3f2fd' : '#fff',
+                }}
+              >
+                <strong>{formattedDate}</strong>
+                <div>
+                  {dailyRecord ? (
+                    <>
+                      <div>Steps: {dailyRecord.steps}</div>
+                      <div>Distance: {dailyRecord.distance} m</div>
+                    </>
+                  ) : (
+                    <div>No Data</div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  // Render Monthly Data Chart
+  const renderMonthlyDataChart = () => {
+    if (!monthlyData || !monthlyData.length) {
+      return null;
+    }
+
+    const ctx = chartRef.current?.getContext('2d');
+
+    if (ctx) {
+      // Destroy existing chart instance if it exists
+      if (ctx.chart) {
+        ctx.chart.destroy();
+      }
+
+      ctx.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: monthlyData.map(data => data.month), // Update based on your data structure
+          datasets: [
+            {
+              label: 'Monthly Steps',
+              data: monthlyData.map(data => data.steps),
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+            {
+              label: 'Monthly Distance',
+              data: monthlyData.map(data => data.distance),
+              backgroundColor: 'rgba(153, 102, 255, 0.2)',
+              borderColor: 'rgba(153, 102, 255, 1)',
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  let label = context.dataset.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.parsed.y !== null) {
+                    label += `${context.parsed.y}`;
+                  }
+                  return label;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+            },
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (dataFetched) {
+      renderMonthlyDataChart();
+    }
+  }, [dataFetched, monthlyData]);
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem('x-token');
+  //   setXToken(null);
+  //   navigate('/login');
+  // };
 
   return (
     <div>
-      <h2>My Activity</h2>
-      <button onClick={handleSyncWithWearable}>Sync with Wearable</button>
+      <h1>My Activity</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        {renderField('age', 'Age', 'number')}
-        {renderField('weight', 'Weight', 'number')}
-        {renderField('height', 'Height', 'number')}
-        {renderField('gender', 'Gender')}
-        {renderField('steps', 'Steps', 'number')}
-        {renderField('distance', 'Distance', 'number')}
+      {/* <button
+        onClick={handleSyncWithWearable}
+        style={{
+          display: 'block',
+          margin: '0 auto',
+          padding: '10px 20px',
+          fontSize: '16px',
+          color: '#fff',
+          backgroundColor: '#2d98da',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          transition: 'background-color 0.3s ease',
+        }}
+      >
+        Sync with Google Fit
+      </button> */}
+      <div className="activity-container">
+        <div
+          onClick={handleSyncWithWearable}
+          className="sync-button-large"
+          role="button"
+          tabIndex="0"
+          onKeyDown={e => e.key === 'Enter' && handleSyncWithWearable()}
+        >
+          <img
+            src={googleFitIcon}
+            alt="Google Fit"
+            className="google-fit-image"
+          />
+          <span className="sync-text-large">Sync with Wearable</span>
+        </div>
 
-        <h3>Daily Data</h3>
-        {filledDailyData.map((data, index) => (
-          <div key={index}>
-            <p>Date: {data.date}</p>
-            <p>Steps: {data.steps}</p>
-            <p>Distance: {data.distance} m</p>
-          </div>
-        ))}
+        <div className="full-width" style={{ marginTop: '40px' }}>
+          {error && <div style={{ color: 'red' }}>{error}</div>}
+          {renderData()}
 
-        <h3>Monthly Data</h3>
-        {monthlyData.map((monthData, index) => (
-          <div key={index}>
-            <p>
-              Month: {monthData.month} - Steps: {monthData.steps}, Distance:{' '}
-              {monthData.distance} m
-            </p>
-          </div>
-        ))}
+          {dailyData.length > 0 && (
+            <div className="calendar-container full-width">
+              {renderCalendarView()}
+            </div>
+          )}
 
-        {editing && (
-          <button type="submit" disabled={!isFormComplete}>
-            Save
-          </button>
-        )}
-      </form>
-      {!editing && dataFetched && !isFormComplete && (
-        <button type="button" onClick={() => setEditing(true)}>
-          Edit
-        </button>
-      )}
-
-      <button onClick={() => navigate('/analytics')}>Go to Analytics</button>
+          {monthlyData.length > 0 && (
+            <div className="monthly-chart-container full-width">
+              <h2>Monthly Activity</h2>
+              <canvas
+                ref={chartRef}
+                id="monthlyDataChart"
+                width="400"
+                height="200"
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

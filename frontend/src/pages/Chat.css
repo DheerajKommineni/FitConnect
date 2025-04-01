@@ -1,0 +1,121 @@
+/* Chat container styles */
+Chat container styles /* Chat container styles */
+/* Chat container styles */
+.chat-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #ffffff; /* Clean white background */
+  border-radius: 12px; /* Soft rounded corners */
+  margin-top: 40px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Header styles */
+.chat-header {
+  font-size: 2rem; /* Larger font size for impact */
+  margin-bottom: 15px; /* Increased margin */
+  position: relative;
+  color: #2c3e50; /* Dark gray for contrast */
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 8px; /* Space below the header */
+  border-bottom: 2px solid #4caf50; /* Green accent color for emphasis */
+}
+
+/* Messages container */
+.chat-messages {
+  flex: 1;
+  max-height: 600px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  border: none; /* Clean look without borders */
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #f9f9f9; /* Light gray for contrast */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Individual message styles */
+.chat-message {
+  margin-bottom: 12px;
+  padding: 12px 16px; /* Comfortable padding */
+  border-radius: 16px; /* More rounded corners */
+  max-width: 70%; /* Limit width for better alignment */
+  position: relative;
+}
+
+/* Styles for messages sent by the current user */
+.chat-message-you {
+  background-color: #4caf50; /* Green for user messages */
+  color: white;
+  align-self: flex-end;
+}
+
+/* Styles for messages received from the friend */
+.chat-message-friend {
+  background-color: #e3f2fd; /* Light blue for friends' messages */
+  color: #2c3e50; /* Darker text for readability */
+  align-self: flex-start;
+}
+
+/* Sender name styles */
+.chat-message-sender {
+  font-weight: bold;
+  color: #2c3e50; /* Darker color for sender names */
+  font-size: 0.9rem; /* Slightly smaller font */
+}
+
+/* No messages text */
+.chat-no-messages {
+  text-align: center;
+  color: #999; /* Subtle light gray */
+}
+
+/* Input container styles */
+.chat-input-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Input field styles */
+.chat-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #ccc; /* Soft border */
+  margin-right: 10px;
+  font-size: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  background-color: #f4f4f4; /* Light gray for input */
+}
+
+/* Send button styles */
+.chat-send-button {
+  padding: 12px 20px;
+  background-color: #4caf50; /* Bright green for the send button */
+  position: relative;
+  bottom: 5px; /* Adjusted position */
+  color: white;
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover */
+  font-weight: bold;
+}
+
+/* Button hover effect */
+.chat-send-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Error message styles */
+.chat-error {
+  text-align: center;
+  color: red;
+  font-size: 1.2rem;
+  margin-top: 10px; /* Spacing above the error message */
+}

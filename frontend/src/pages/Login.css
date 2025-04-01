@@ -1,14 +1,82 @@
+body {
+  background-color: #e8f5ff; /* Light blue background color for a fresh theme */
+  font-family: 'Arial', sans-serif; /* Clean font for the app */
+  margin: 0; /* Remove default margin */
+}
+
+.fitconnect-title2 {
+  position: absolute;
+  top: 10%;
+  font-family: 'Arial Black', sans-serif;
+  font-size: 3rem; /* Larger size for impact */
+  color: #2d98da; /* Theme color */
+  text-align: center;
+  margin-bottom: 20px; /* Space below the title */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  letter-spacing: 1.5px; /* Spacing for modern look */
+}
+
+.container-fluid {
+  min-height: 100vh; /* Full height for vertical centering */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: white; /* White card for contrast */
+  border-radius: 12px; /* More rounded corners for a modern look */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.2s; /* Smooth transformation effect */
+  max-width: 400px; /* Limit card width */
+  width: 100%; /* Full width for responsiveness */
+}
+
+.card:hover {
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.card-title {
+  color: #2d98da; /* FitConnect theme color */
+  font-weight: bold; /* Bold title for emphasis */
+}
+
+.login-input {
+  border-radius: 6px; /* Rounded corners for input fields */
+  border: 1px solid #d1e4f7; /* Light border for a soft look */
+  transition: border-color 0.3s; /* Smooth transition for focus effect */
+}
+
+.login-input:focus {
+  border-color: #2d98da; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
 .custom-btn {
-  background-color: #68c1f1; /* Unique stylish color */
+  background-color: #2d98da; /* Primary button color matching theme */
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px; /* Increased padding for comfort */
+  border-radius: 6px; /* Rounded corners */
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease; /* Smooth transition */
 }
 
 .custom-btn:hover {
-  background-color: #b8e1f7; /* Slightly darker shade for hover effect */
+  background-color: #237abf; /* Darker shade for hover effect */
+}
+
+.text-center {
+  margin-top: 15px; /* Space above the link */
+}
+
+.create-account-link {
+  color: #2d98da; /* FitConnect theme color for the link */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s; /* Smooth transition for hover */
+}
+
+.create-account-link:hover {
+  color: #1e2a38; /* Darker shade on hover for contrast */
 }

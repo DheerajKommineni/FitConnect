@@ -1,7 +1,10 @@
+// WORKING CODE
+
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { store } from '../App';
 import { Line } from 'react-chartjs-2';
+import { format } from 'date-fns';
 import {
   Chart as ChartJS,
   LineElement,
@@ -13,6 +16,7 @@ import {
   Legend,
 } from 'chart.js';
 import { useNavigate } from 'react-router-dom';
+// import './Analytics.css';
 
 const Analytics = () => {
   const [dailyData, setDailyData] = useState([]);
@@ -39,21 +43,38 @@ const Analytics = () => {
 
   const fetchAnalyticsData = async token => {
     try {
-      const response = await axios.get('http://localhost:8000/activity', {
+      const response = await axios.get('http://localhost:8000/api/activity', {
         headers: {
           'x-token': token,
         },
         withCredentials: true,
       });
 
-      const { dailyData, monthlyData } = response.data;
+      const {
+        totalSteps,
+        totalDistance,
+        totalCalories,
+        totalHeartRate,
+        totalMoveMinutes,
+        totalSleep,
+        dailyData,
+        monthlyData,
+      } = response.data;
+
       setDailyData(dailyData);
       setMonthlyData(monthlyData);
       setDataFetched(true);
 
       prepareChartData(dailyData, monthlyData);
-      generateSuggestions(dailyData, monthlyData);
-      await fetchPredictions(monthlyData, token); // Make predictions based on the monthly data
+      generateSuggestions(
+        totalSteps,
+        totalDistance,
+        totalCalories,
+        totalHeartRate,
+        totalMoveMinutes,
+        totalSleep,
+      );
+      await fetchPredictions(monthlyData, token);
     } catch (error) {
       console.error('Error fetching analytics data:', error);
       setError('Error fetching analytics data');
@@ -61,13 +82,55 @@ const Analytics = () => {
   };
 
   const prepareChartData = (dailyData, monthlyData) => {
-    const dailyLabels = dailyData.map(data => data.date);
+    // Daily Data Preparation
+    const dailyLabels = dailyData.map(data =>
+      format(new Date(data.date), 'MMM do'),
+    );
     const dailySteps = dailyData.map(data => data.steps);
     const dailyDistance = dailyData.map(data => data.distance);
+    const dailyCalories = dailyData.map(data => data.caloriesExpended || 0);
+    const dailyHeartRate = dailyData.map(data => data.heartRate || 0);
+    const dailyMoveMinutes = dailyData.map(data => data.moveMinutes || 0);
 
+    // Find the max values and their indices
+    const maxDailyStepsIndex = dailySteps.indexOf(Math.max(...dailySteps));
+    const maxDailyDistanceIndex = dailyDistance.indexOf(
+      Math.max(...dailyDistance),
+    );
+    const maxDailyCaloriesIndex = dailyCalories.indexOf(
+      Math.max(...dailyCalories),
+    );
+    const maxDailyHeartRateIndex = dailyHeartRate.indexOf(
+      Math.max(...dailyHeartRate),
+    );
+    const maxDailyMoveMinutesIndex = dailyMoveMinutes.indexOf(
+      Math.max(...dailyMoveMinutes),
+    );
+
+    // Monthly Data Preparation
     const monthlyLabels = monthlyData.map(data => data.month);
     const monthlySteps = monthlyData.map(data => data.steps);
     const monthlyDistance = monthlyData.map(data => data.distance);
+    const monthlyCalories = monthlyData.map(data => data.caloriesExpended || 0);
+    const monthlyHeartRate = monthlyData.map(data => data.heartRate || 0);
+    const monthlyMoveMinutes = monthlyData.map(data => data.moveMinutes || 0);
+
+    // Find the max values and their indices
+    const maxMonthlyStepsIndex = monthlySteps.indexOf(
+      Math.max(...monthlySteps),
+    );
+    const maxMonthlyDistanceIndex = monthlyDistance.indexOf(
+      Math.max(...monthlyDistance),
+    );
+    const maxMonthlyCaloriesIndex = monthlyCalories.indexOf(
+      Math.max(...monthlyCalories),
+    );
+    const maxMonthlyHeartRateIndex = monthlyHeartRate.indexOf(
+      Math.max(...monthlyHeartRate),
+    );
+    const maxMonthlyMoveMinutesIndex = monthlyMoveMinutes.indexOf(
+      Math.max(...monthlyMoveMinutes),
+    );
 
     setDailyChartData({
       labels: dailyLabels,
@@ -77,14 +140,73 @@ const Analytics = () => {
           data: dailySteps,
           borderColor: 'blue',
           fill: false,
+          pointBackgroundColor: dailySteps.map((_, index) =>
+            index === maxDailyStepsIndex ? 'red' : 'blue',
+          ),
+          pointRadius: dailySteps.map((_, index) =>
+            index === maxDailyStepsIndex ? 8 : 3,
+          ),
         },
         {
           label: 'Daily Distance',
           data: dailyDistance,
           borderColor: 'green',
           fill: false,
+          pointBackgroundColor: dailyDistance.map((_, index) =>
+            index === maxDailyDistanceIndex ? 'red' : 'green',
+          ),
+          pointRadius: dailyDistance.map((_, index) =>
+            index === maxDailyDistanceIndex ? 8 : 3,
+          ),
+        },
+        {
+          label: 'Daily Calories',
+          data: dailyCalories,
+          borderColor: 'red',
+          fill: false,
+          pointBackgroundColor: dailyCalories.map((_, index) =>
+            index === maxDailyCaloriesIndex ? 'red' : 'red',
+          ),
+          pointRadius: dailyCalories.map((_, index) =>
+            index === maxDailyCaloriesIndex ? 8 : 3,
+          ),
+        },
+        {
+          label: 'Daily Heart Rate',
+          data: dailyHeartRate,
+          borderColor: 'purple',
+          fill: false,
+          pointBackgroundColor: dailyHeartRate.map((_, index) =>
+            index === maxDailyHeartRateIndex ? 'red' : 'purple',
+          ),
+          pointRadius: dailyHeartRate.map((_, index) =>
+            index === maxDailyHeartRateIndex ? 8 : 3,
+          ),
+        },
+        {
+          label: 'Daily Move Minutes',
+          data: dailyMoveMinutes,
+          borderColor: 'orange',
+          fill: false,
+          pointBackgroundColor: dailyMoveMinutes.map((_, index) =>
+            index === maxDailyMoveMinutesIndex ? 'red' : 'orange',
+          ),
+          pointRadius: dailyMoveMinutes.map((_, index) =>
+            index === maxDailyMoveMinutesIndex ? 8 : 3,
+          ),
         },
       ],
+      options: {
+        scales: {
+          x: {
+            ticks: {
+              callback: function (value, index, values) {
+                return dailyLabels[index];
+              },
+            },
+          },
+        },
+      },
     });
 
     setMonthlyChartData({
@@ -95,32 +217,78 @@ const Analytics = () => {
           data: monthlySteps,
           borderColor: 'blue',
           fill: false,
+          pointBackgroundColor: monthlySteps.map((_, index) =>
+            index === maxMonthlyStepsIndex ? 'red' : 'blue',
+          ),
+          pointRadius: monthlySteps.map((_, index) =>
+            index === maxMonthlyStepsIndex ? 8 : 3,
+          ),
         },
         {
           label: 'Monthly Distance',
           data: monthlyDistance,
           borderColor: 'green',
           fill: false,
+          pointBackgroundColor: monthlyDistance.map((_, index) =>
+            index === maxMonthlyDistanceIndex ? 'red' : 'green',
+          ),
+          pointRadius: monthlyDistance.map((_, index) =>
+            index === maxMonthlyDistanceIndex ? 8 : 3,
+          ),
+        },
+        {
+          label: 'Monthly Calories',
+          data: monthlyCalories,
+          borderColor: 'red',
+          fill: false,
+          pointBackgroundColor: monthlyCalories.map((_, index) =>
+            index === maxMonthlyCaloriesIndex ? 'red' : 'red',
+          ),
+          pointRadius: monthlyCalories.map((_, index) =>
+            index === maxMonthlyCaloriesIndex ? 8 : 3,
+          ),
+        },
+        {
+          label: 'Monthly Heart Rate',
+          data: monthlyHeartRate,
+          borderColor: 'purple',
+          fill: false,
+          pointBackgroundColor: monthlyHeartRate.map((_, index) =>
+            index === maxMonthlyHeartRateIndex ? 'red' : 'purple',
+          ),
+          pointRadius: monthlyHeartRate.map((_, index) =>
+            index === maxMonthlyHeartRateIndex ? 8 : 3,
+          ),
+        },
+        {
+          label: 'Monthly Move Minutes',
+          data: monthlyMoveMinutes,
+          borderColor: 'orange',
+          fill: false,
+          pointBackgroundColor: monthlyMoveMinutes.map((_, index) =>
+            index === maxMonthlyMoveMinutesIndex ? 'red' : 'orange',
+          ),
+          pointRadius: monthlyMoveMinutes.map((_, index) =>
+            index === maxMonthlyMoveMinutesIndex ? 8 : 3,
+          ),
         },
       ],
     });
   };
 
-  const generateSuggestions = (dailyData, monthlyData) => {
-    let totalSteps = 0;
-    let totalDistance = 0;
-    let activeDays = 0;
-
-    dailyData.forEach(data => {
-      totalSteps += data.steps;
-      totalDistance += data.distance;
-      if (data.steps > 0) {
-        activeDays++;
-      }
-    });
-
+  const generateSuggestions = (
+    totalSteps,
+    totalDistance,
+    totalCalories,
+    totalHeartRate,
+    totalMoveMinutes,
+    totalSleep,
+  ) => {
     const averageSteps = totalSteps / dailyData.length;
     const averageDistance = totalDistance / dailyData.length;
+    const averageCalories = totalCalories / dailyData.length;
+    const averageHeartRate = totalHeartRate / dailyData.length;
+    const averageMoveMinutes = totalMoveMinutes / dailyData.length;
 
     let suggestionsText =
       'Here are some suggestions to improve your fitness:\n\n';
@@ -136,28 +304,47 @@ const Analytics = () => {
         'Great job! You are reaching more than 10000 steps daily. Keep up the good work!\n';
     }
 
-    suggestionsText += `\nYou have been active on ${activeDays} days this month. Try to maintain a consistent activity level.\n`;
+    if (averageCalories < 2000) {
+      suggestionsText +=
+        'Your daily calorie intake might be low. Ensure you are consuming enough calories to support your activity level.\n';
+    } else if (averageCalories > 2500) {
+      suggestionsText +=
+        'Your daily calorie intake might be high. Consider balancing your diet to avoid excess calories.\n';
+    }
+
+    if (averageHeartRate < 60) {
+      suggestionsText +=
+        'Consider increasing your physical activity to raise your average heart rate to a healthy level.\n';
+    } else if (averageHeartRate > 100) {
+      suggestionsText +=
+        'Monitor your heart rate during exercise. If it remains high, consult a healthcare professional.\n';
+    }
+
+    if (totalMoveMinutes > 0) {
+      suggestionsText += `You have been active for ${totalMoveMinutes} minutes this month. Keep up the consistent activity.\n`;
+    } else {
+      suggestionsText +=
+        'You have been inactive this month. Try to incorporate some physical activity into your routine.\n';
+    }
 
     setSuggestions(suggestionsText);
   };
 
   const fetchPredictions = async (monthlyData, token) => {
     try {
-      console.log('Token in fetchPredictions function:', token); // Logging the token
       const response = await axios.post(
         'http://localhost:8000/predict',
-        { monthlyData }, // Data payload
+        { monthlyData },
         {
           headers: {
-            'x-token': token, // Correctly place headers here
+            'x-token': token,
           },
         },
       );
 
       if (response.status === 200) {
-        console.log('Predictions received:', response.data); // Log predictions data
         setPredictions(response.data.predictions);
-        generateInsights(response.data.predictions); // Generate insights based on predictions
+        generateInsights(response.data.predictions);
       } else {
         console.error('Error making predictions:', response);
         setError('Error making predictions');
@@ -169,12 +356,17 @@ const Analytics = () => {
   };
 
   const generateInsights = predictions => {
-    let insightsText = 'Based on your predictions:\n\n';
+    if (!predictions || predictions.length === 0) {
+      setInsights('No predictions available to generate insights.');
+      return;
+    }
 
+    let insightsText = 'Based on your predictions:\n\n';
     const predictedSteps = predictions.map(prediction => prediction.value);
     const averagePredictedSteps =
       predictedSteps.reduce((sum, steps) => sum + steps, 0) /
       predictedSteps.length;
+
     const trend =
       averagePredictedSteps > 10000
         ? 'increasing'
@@ -204,7 +396,6 @@ const Analytics = () => {
     const fetchData = async () => {
       if (!xToken) {
         const storedToken = localStorage.getItem('x-token');
-        setXToken(storedToken);
         if (storedToken) {
           setXToken(storedToken);
         } else {
@@ -217,43 +408,121 @@ const Analytics = () => {
         await fetchAnalyticsData(xToken);
       } catch (error) {
         console.error('Error fetching analytics data:', error);
-        setError('Error fetching analytics data');
       }
     };
 
     fetchData();
-  }, [xToken]);
+  }, [xToken, setXToken]);
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem('x-token');
+  //   setXToken(null);
+  //   navigate('/login');
+  // };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Activity Analytics</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div>
+      <h1>Analytics</h1>
 
-      {dataFetched && (
-        <>
-          <h3>Daily Activity Data</h3>
-          <Line data={dailyChartData} style={{ marginBottom: '20px' }} />
-
-          <h3>Monthly Activity Data</h3>
-          <Line data={monthlyChartData} style={{ marginBottom: '20px' }} />
-
-          <h3>Suggestions and Goals</h3>
-          <p style={{ marginBottom: '20px' }}>{suggestions}</p>
-
-          {insights && (
+      {error ? (
+        <p>{error}</p>
+      ) : dataFetched ? (
+        <div>
+          <h2 style={{ marginLeft: '30px' }}>Daily Activity Data</h2>
+          <Line style={{ margin: '50px' }} data={dailyChartData} />
+          <h2 style={{ marginLeft: '30px' }}>Monthly Activity Data</h2>
+          <Line style={{ margin: '50px' }} data={monthlyChartData} />
+          <h2 style={{ marginLeft: '30px' }}>Suggestions</h2>
+          <p style={{ margin: '30px' }}>{suggestions}</p>
+          <div
+            style={{
+              margin: '20px',
+              padding: '10px',
+              border: '1px solid #ddd',
+              borderRadius: '5px',
+            }}
+          >
+            <h2>Insights</h2>
+            <p>{insights}</p>
+          </div>
+          {predictions.length > 0 && (
             <div
               style={{
-                marginTop: '20px',
+                margin: '20px',
                 padding: '10px',
                 border: '1px solid #ddd',
                 borderRadius: '5px',
               }}
+              className="predictions-container"
             >
-              <h3>Predictions and Insights</h3>
-              <p>{insights}</p>
+              <h2>Predictions</h2>
+              <h2 className="predictions-header">Predicted Activity Trends</h2>
+              <ul className="predictions-list">
+                {predictions.map((prediction, index) => (
+                  <li
+                    key={index}
+                    className={`prediction-item ${
+                      prediction.value > 0.7
+                        ? 'high'
+                        : prediction.value > 0.4
+                        ? 'moderate'
+                        : 'low'
+                    }`}
+                  >
+                    <strong>Month {index + 1}:</strong>{' '}
+                    {prediction.value > 0.7
+                      ? 'High activity expected. Keep it up!'
+                      : prediction.value > 0.4
+                      ? 'Moderate activity expected. Stay consistent!'
+                      : 'Low activity expected. Consider increasing your efforts.'}
+                  </li>
+                ))}
+              </ul>
+              <div className="predictions-summary">
+                <h3 className="predictions-summary-header">
+                  Summary of Predictions
+                </h3>
+
+                <p>
+                  Over the next six months:
+                  <ul>
+                    <li className="summary-item">
+                      <strong>High Activity Months:</strong>{' '}
+                      {predictions
+                        .map((pred, idx) =>
+                          pred.value > 0.7 ? `Month ${idx + 1}` : null,
+                        )
+                        .filter(Boolean)
+                        .join(', ') || 'None'}
+                    </li>
+                    <li className="summary-item">
+                      <strong>Moderate Activity Months:</strong>{' '}
+                      {predictions
+                        .map((pred, idx) =>
+                          pred.value > 0.4 && pred.value <= 0.7
+                            ? `Month ${idx + 1}`
+                            : null,
+                        )
+                        .filter(Boolean)
+                        .join(', ') || 'None'}
+                    </li>
+                    <li className="summary-item">
+                      <strong>Low Activity Months:</strong>{' '}
+                      {predictions
+                        .map((pred, idx) =>
+                          pred.value <= 0.4 ? `Month ${idx + 1}` : null,
+                        )
+                        .filter(Boolean)
+                        .join(', ') || 'None'}
+                    </li>
+                  </ul>
+                </p>
+              </div>
             </div>
           )}
-        </>
+        </div>
+      ) : (
+        <p>Loading analytics data...</p>
       )}
     </div>
   );

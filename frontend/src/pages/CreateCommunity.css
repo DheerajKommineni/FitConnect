@@ -1,0 +1,88 @@
+/* CreateCommunity.css */
+
+.create-community-container {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.create-community-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.create-community-title {
+  margin: 0 0 20px;
+  color: #333;
+  font-size: 24px;
+  border-bottom: 2px solid #4a90e2;
+  padding-bottom: 10px;
+}
+
+.create-community-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.create-community-textarea {
+  height: 100px;
+  resize: vertical;
+  width: 550px;
+}
+
+.create-community-subtitle {
+  margin: 0 0 10px;
+  color: #4a90e2;
+  font-size: 18px;
+}
+
+.create-community-friend-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-community-friend-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.create-community-friend-item input[type='checkbox'] {
+  margin-right: 10px;
+}
+
+.create-community-button {
+  background-color: #4a90e2;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.create-community-button:hover {
+  background-color: #357abd;
+}
+
+.create-community-button:disabled {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+}

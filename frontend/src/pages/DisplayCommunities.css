@@ -1,0 +1,56 @@
+.communities-container {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  position: absolute;
+  left: 0; /* Position it on the left */
+  top: 100px;
+  width: 300px; /* Adjust as needed */
+  transform: translateX(-25%); /* Pushes it further to the left */
+  z-index: 1; /* Ensures this section is on top */
+}
+
+.community-card {
+  background-color: #f4f4f4;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer; /* Make the whole card clickable */
+  transition: background-color 0.3s;
+}
+
+.community-card:hover {
+  background-color: #e0e0e0; /* Slightly darker on hover */
+}
+
+.community-info h4 {
+  margin: 0;
+  color: #4a90e2;
+}
+
+.community-info p {
+  margin: 5px 0;
+}
+
+.member-indication {
+  color: green;
+  font-weight: bold;
+}
+
+.join-btn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.join-btn:hover {
+  background-color: #357abd;
+}
+
+.join-btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}

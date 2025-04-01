@@ -1,0 +1,143 @@
+/* NewsFeed.css */
+
+.newsfeed {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.post {
+  border: none;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.post h2 {
+  font-size: 1.5em;
+  margin: 0;
+  color: #333;
+}
+
+.post h3 {
+  font-size: 1.25em;
+  margin: 10px 0;
+  color: #555;
+}
+
+.post p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.post img,
+.post video {
+  max-width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.likes-comments {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.likes-comments p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #777;
+}
+
+.likes-comments button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.likes-comments button:hover {
+  background-color: #45a049;
+}
+
+.comments-section {
+  margin-top: 10px;
+}
+
+.comments-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comments-section li {
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.comments-section li em {
+  color: #4caf50;
+}
+
+.comment-input {
+  margin-top: 10px;
+  padding: 8px;
+  width: calc(100% - 110px);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.comment-button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.comment-button:hover {
+  background-color: #45a049;
+}
+
+.like-button {
+  background-color: #4caf50; /* Green background */
+  color: white; /* White text color */
+  padding: 10px 15px; /* Padding for size */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px; /* Font size */
+  font-weight: bold; /* Bold text */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.like-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.like-button:disabled {
+  background-color: #ccc; /* Gray background when disabled */
+  cursor: not-allowed; /* Not-allowed cursor when disabled */
+  box-shadow: none; /* Remove shadow when disabled */
+}

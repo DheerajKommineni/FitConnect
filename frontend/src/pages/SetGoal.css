@@ -1,0 +1,73 @@
+.set-goal-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f0f4f8; /* Lighter background for a fresh look */
+  border-radius: 12px; /* Slightly increased border radius for a modern touch */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
+}
+
+.set-goal-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2d98da; /* Darker text for contrast */
+  font-family: 'Arial', sans-serif; /* Clean font for headings */
+}
+
+.set-goal-container form div {
+  margin-bottom: 20px; /* Increased space between form elements */
+}
+
+.set-goal-container label {
+  display: block;
+  margin-bottom: 6px; /* Slightly more space below labels */
+  color: #1e2a38; /* Consistent color for labels */
+  font-weight: 600; /* Bold labels for clarity */
+}
+
+.set-goal-container input,
+.set-goal-container select {
+  width: 100%;
+  padding: 12px; /* More padding for comfort */
+  font-size: 16px;
+  border: 1px solid #d1e4f7; /* Lighter border color */
+  border-radius: 8px; /* More rounded corners */
+  transition: border-color 0.3s; /* Smooth transition for focus */
+}
+
+.set-goal-container input:focus,
+.set-goal-container select:focus {
+  border-color: #2d98da; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+.set-goal-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2d98da; /* Primary button color */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px; /* More rounded corners for buttons */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+.set-goal-container button:hover {
+  background-color: #2b8ecf; /* Slightly darker shade for hover */
+}
+
+.error {
+  color: #d9534f; /* Bootstrap's danger color for errors */
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold; /* Bold error message */
+}
+
+.badge-preview {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  color: #1e2a38; /* Consistent color for badge preview */
+}

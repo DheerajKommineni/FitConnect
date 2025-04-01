@@ -19,7 +19,7 @@ const Login = () => {
   const submitHandler = e => {
     e.preventDefault();
     axios
-      .post('http://localhost:8000/login', data)
+      .post('http://localhost:8000/api/auth/login', data)
       .then(res => setToken(res.data.token))
       .catch(err => console.log(err));
   };
@@ -29,19 +29,16 @@ const Login = () => {
   }
 
   return (
-    <div
-      className="container-fluid d-flex justify-content-center align-items-center"
-      style={{ minHeight: '100vh', backgroundColor: '#f0f0f0' }}
-    >
-      <div className="card shadow" style={{ maxWidth: '400px', width: '100%' }}>
+    <div className="container-fluid">
+      <h1 className="fitconnect-title2">FitConnect</h1>
+      <div className="card shadow login-card">
         <div className="card-body">
           <h3 className="card-title text-center mb-4">Login</h3>
           <form onSubmit={submitHandler}>
             <div className="mb-3">
               <input
                 type="email"
-                className="form-control"
-                style={{ width: '100%' }}
+                className="form-control login-input"
                 onChange={changeHandler}
                 name="email"
                 placeholder="Email"
@@ -51,8 +48,7 @@ const Login = () => {
             <div className="mb-3">
               <input
                 type="password"
-                className="form-control"
-                style={{ width: '100%' }}
+                className="form-control login-input"
                 onChange={changeHandler}
                 name="password"
                 placeholder="Password"
@@ -66,7 +62,7 @@ const Login = () => {
             </div>
           </form>
           <div className="text-center">
-            <Link style={{ color: 'black' }} to="/register">
+            <Link to="/register" className="create-account-link">
               Create an account
             </Link>
           </div>

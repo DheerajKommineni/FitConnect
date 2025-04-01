@@ -1,0 +1,70 @@
+.leaderboard-container {
+  background-color: #f0f4f8; /* Light background */
+  color: #1e2a38; /* Dark text color */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-header {
+  text-align: center;
+  color: #2d98da; /* Bright accent color */
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #e0e0e0; /* Light border */
+}
+
+.leaderboard-table th {
+  background-color: #0f3852; /* Header background */
+  color: white;
+  border-bottom: 2px solid #1e2a38; /* Darker border for the header */
+}
+
+.leaderboard-table tr:nth-child(even) {
+  background-color: rgba(45, 152, 218, 0.1); /* Light blue for even rows */
+}
+
+.leaderboard-table tr:nth-child(odd) {
+  background-color: white; /* White for odd rows */
+}
+
+.badge-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.badge {
+  margin: 0 5px;
+  display: flex;
+  align-items: center;
+  font-weight: bold; /* Make badge count bold */
+}
+
+.bronze {
+  color: #cd7f32; /* Bronze color */
+}
+
+.silver {
+  color: #c0c0c0; /* Silver color */
+}
+
+.gold {
+  color: #ffd700; /* Gold color */
+}
+
+.current-user-info {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center; /* Center current user info */
+}

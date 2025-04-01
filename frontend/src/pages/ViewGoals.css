@@ -1,0 +1,76 @@
+.view-goals-container {
+  padding: 30px;
+  background-color: #f0f4f8; /* Light background color */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: auto;
+}
+
+.header-main {
+  color: #2d98da; /* Darker text for contrast */
+  font-family: 'Arial', sans-serif;
+  font-size: 2rem; /* Main header size */
+  text-align: center; /* Center align */
+  margin-bottom: 15px; /* Space below the header */
+}
+
+.goal-details {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #e0e0e0; /* Light border */
+  border-radius: 8px;
+  background-color: #fff; /* White background for the goal details */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-secondary {
+  color: #444; /* Slightly darker for secondary headings */
+  font-size: 1.5rem; /* Secondary header size */
+  margin: 10px 0;
+}
+
+.header-tertiary {
+  color: #444; /* Same color for tertiary headings */
+  font-size: 1.25rem; /* Tertiary header size */
+  margin: 10px 0; /* Space below */
+}
+
+.text-paragraph {
+  color: #555; /* Medium gray for regular text */
+}
+
+.participant-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; /* Remove default margin */
+}
+
+.participant-list-item {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between text and badge */
+  transition: background-color 0.3s ease;
+}
+
+.participant-list-item:hover {
+  background-color: #f7f9fc; /* Light hover effect */
+}
+
+.badge-icon {
+  margin-left: 8px; /* Space between the username and the badge icon */
+}
+
+.error-message {
+  color: #d9534f; /* Bootstrap's danger color for errors */
+  margin-bottom: 10px;
+  font-weight: bold; /* Bold error message */
+}
+
+.badge-preview {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}

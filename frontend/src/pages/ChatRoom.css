@@ -1,0 +1,103 @@
+/* ChatRoom.css */
+
+.chat-room-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-room-header {
+  background: #2d98da;
+  color: white;
+  padding: 15px;
+  font-size: 1.5rem;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  text-align: center;
+}
+
+.chat-room-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-direction: column-reverse; /* Reverse the order to show the latest messages at the bottom */
+}
+
+.chat-room-message {
+  margin: 10px 0;
+  padding: 12px 15px;
+  border-radius: 20px;
+  max-width: 70%;
+  word-wrap: break-word;
+  position: relative;
+}
+
+.chat-room-message strong {
+  font-weight: bold;
+}
+
+/* Style for current user's messages (align to right) */
+.chat-room-message.current-user {
+  background: #d4edda; /* Light green for current user */
+  align-self: flex-end; /* Align to the right */
+}
+
+/* Style for other users' messages (align to left) */
+.chat-room-message.other-user {
+  background: #e1f7fa; /* Light cyan for other users */
+  align-self: flex-start; /* Align to the left */
+}
+
+.chat-room-input-container {
+  display: flex;
+  padding: 10px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.chat-room-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 1rem;
+  margin-right: 10px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.chat-room-input:focus {
+  border-color: #007bff;
+}
+
+.chat-send-button {
+  background: #2d98da;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.chat-send-button:hover {
+  background: #0056b3;
+}
+
+/* Additional Styles for Empty Chat */
+.chat-no-messages {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #6c757d;
+  padding: 20px;
+}

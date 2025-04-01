@@ -1,0 +1,169 @@
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #4a90e2;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 30px;
+  color: #4a90e2;
+}
+
+/* Form container */
+form {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+input[type='text'],
+input[type='number'] {
+  width: calc(100% - 10px);
+  padding: 10px;
+  border: 1px solid #cfd4da;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input[type='text']:focus,
+input[type='number']:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+button[type='submit'],
+button[type='button'] {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type='submit']:hover,
+button[type='button']:hover {
+  background-color: #357abd;
+}
+
+button[type='button'] {
+  margin-top: 10px;
+}
+
+.suggestions-list {
+  background-color: white;
+  border: 1px solid #cfd4da;
+  border-radius: 4px;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  list-style-type: none;
+  padding: 0;
+  max-height: 100px;
+  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f4f7;
+}
+
+/* Results container */
+/* Results container */
+.results {
+  background-color: #e6f7ff; /* Light blue background */
+  border-radius: 12px; /* Rounded corners */
+  padding: 30px;
+  width: 1000px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Deeper shadow for elevation effect */
+  max-width: 1000px;
+  margin: 40px auto 0;
+  text-align: center; /* Center align the text */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Add hover effect for better interaction */
+.results:hover {
+  transform: translateY(-5px); /* Slight upward movement on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Results text styling */
+.results p {
+  margin-bottom: 20px; /* Increase the spacing between paragraphs */
+  font-size: 18px; /* Larger font size for readability */
+  color: #333; /* Darker color for the text */
+}
+
+.results p strong {
+  color: #007acc; /* Accent color for important values */
+  font-weight: bold; /* Make the important text bold */
+}
+
+/* Result titles */
+.results h2 {
+  color: #007acc; /* Consistent with the accent color */
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+/* Stylish borders and lines to separate content */
+.results p::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background-color: #007acc;
+  margin: 0 auto 15px auto;
+}
+
+/* Add icon-like effect before the important data */
+.results p::after {
+  content: '✓';
+  font-size: 16px;
+  color: #4caf50; /* Green checkmark for success */
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .results {
+    padding: 20px;
+  }
+
+  .results p {
+    font-size: 16px; /* Slightly smaller font for mobile */
+  }
+
+  .results h2 {
+    font-size: 20px; /* Slightly smaller heading for mobile */
+  }
+}

@@ -1,0 +1,163 @@
+/* Profile Page Styles */
+.profile {
+  background-color: #f9f9f9; /* Slightly off-white for better contrast */
+  padding: 30px; /* Increase padding for a more spacious feel */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  max-width: 800px; /* Max width for layout */
+  margin: 20px auto; /* Center the profile container */
+}
+
+/* Profile Header Styles */
+.profile-header {
+  display: flex;
+  justify-content: space-between; /* Aligns title left and buttons right */
+  align-items: center;
+  margin-bottom: 30px; /* More space below the header */
+}
+
+.profile-title {
+  font-size: 28px; /* Larger font for titles */
+  font-weight: bold;
+  color: #333; /* Darker text color */
+  margin: 0; /* Remove default margin */
+}
+
+/* Profile Actions Styles */
+.profile-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 20px; /* More space between buttons */
+}
+
+/* Stylish Button Common Styles */
+.button {
+  background-color: #3498db; /* Primary button color */
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px; /* Uniform padding */
+  border-radius: 50px; /* More rounded edges for a pill shape */
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none !important; /* No underline */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
+  transition: all 0.3s ease; /* Smooth transitions */
+  position: relative; /* Position for after element */
+  display: inline-block; /* Ensure the button can have padding and margin */
+}
+
+/* Button Hover Effect */
+.button:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+  transform: translateY(-5px) scale(1.05); /* Lift and slightly enlarge on hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+}
+
+/* Button Active State */
+.button:active {
+  transform: translateY(2px); /* Slightly lower on click */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Reset shadow on click */
+}
+
+/* Button Overlay Effect */
+.button:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1); /* Light overlay */
+  border-radius: 50px; /* Match button shape */
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.button:hover:after {
+  transform: scale(1);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .profile-actions {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    align-items: flex-start; /* Align to the start for better aesthetics */
+    gap: 15px; /* Reduce space for vertical stacking */
+  }
+}
+
+/* Post Styles */
+.post {
+  background-color: #fff; /* White background for posts */
+  border-radius: 10px; /* Rounded corners for posts */
+  padding: 20px; /* Padding for posts */
+  margin-bottom: 20px; /* Space between posts */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.post h2 {
+  font-size: 22px; /* Slightly larger title */
+  color: #2c3e50; /* Darker color for titles */
+  margin: 0; /* Remove default margin */
+}
+
+.post h3 {
+  font-size: 18px; /* Subtitle size */
+  color: #7f8c8d; /* Subtitle color */
+}
+
+.post p {
+  color: #34495e; /* Paragraph color */
+  line-height: 1.6; /* Improved line spacing */
+}
+
+/* Media Styles */
+.post img,
+.post video {
+  max-width: 100%; /* Responsive media */
+  border-radius: 8px; /* Rounded corners for media */
+  margin-top: 10px; /* Space above media */
+}
+
+/* Likes and Comments */
+.post p:last-of-type {
+  font-weight: bold; /* Highlight likes and comments */
+  color: #2980b9; /* Blue for emphasis */
+}
+
+/* Comment Styles */
+ul {
+  padding-left: 20px; /* Indent list */
+  margin-top: 10px; /* Space above comments */
+}
+
+li {
+  color: #34495e; /* Dark color for comments */
+  margin-bottom: 5px; /* Space between comments */
+}
+
+li em {
+  color: #7f8c8d; /* Lighter color for usernames */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .profile {
+    padding: 15px; /* Less padding on small screens */
+  }
+
+  .profile-title {
+    font-size: 24px; /* Slightly smaller title */
+  }
+
+  .post {
+    padding: 15px; /* Less padding for posts */
+  }
+
+  .profile-actions {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px; /* Reduced gap for vertical stacking */
+  }
+}

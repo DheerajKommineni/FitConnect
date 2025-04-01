@@ -19,16 +19,20 @@ const Register = () => {
   const submitHandler = e => {
     e.preventDefault();
     axios
-      .post('http://localhost:8000/register', data)
-      .then(res => alert(res.data))
+      .post('http://localhost:8000/api/auth/register', data)
+      .then(res => {
+        if (res.status === 200 || res.status === 201) {
+          alert('Account created successfully!');
+        } else {
+          alert('An error occurred. Please try again.');
+        }
+      })
       .catch(err => console.log(err));
   };
 
   return (
-    <div
-      className="container-fluid d-flex justify-content-center align-items-center"
-      style={{ minHeight: '100vh', backgroundColor: '#f0f0f0' }}
-    >
+    <div className="container-fluid">
+      <h1 className="fitconnect-title2">FitConnect</h1>
       <div className="card shadow" style={{ maxWidth: '400px', width: '100%' }}>
         <div className="card-body">
           <h3 className="card-title text-center mb-4">Register</h3>
@@ -37,7 +41,6 @@ const Register = () => {
               <input
                 type="text"
                 className="form-control"
-                style={{ width: '100%' }}
                 onChange={changeHandler}
                 name="username"
                 placeholder="User Name"
@@ -48,7 +51,6 @@ const Register = () => {
               <input
                 type="email"
                 className="form-control"
-                style={{ width: '100%' }}
                 onChange={changeHandler}
                 name="email"
                 placeholder="Email"
@@ -59,7 +61,6 @@ const Register = () => {
               <input
                 type="password"
                 className="form-control"
-                style={{ width: '100%' }}
                 onChange={changeHandler}
                 name="password"
                 placeholder="Password"
@@ -70,7 +71,6 @@ const Register = () => {
               <input
                 type="password"
                 className="form-control"
-                style={{ width: '100%' }}
                 onChange={changeHandler}
                 name="confirmpassword"
                 placeholder="Confirm Password"
@@ -84,7 +84,7 @@ const Register = () => {
             </div>
           </form>
           <div className="text-center">
-            <Link style={{ color: 'black' }} to="/login">
+            <Link style={{ color: '#2d98da' }} to="/login">
               Already have an account? Login
             </Link>
           </div>

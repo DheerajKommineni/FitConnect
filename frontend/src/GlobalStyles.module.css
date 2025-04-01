@@ -1,0 +1,29 @@
+/* GlobalStyles.module.css */
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+/* Body Styling */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Full Width Containers */
+.container,
+.wrapper {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+}

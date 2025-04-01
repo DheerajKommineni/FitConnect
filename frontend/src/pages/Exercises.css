@@ -1,0 +1,103 @@
+.exercises-page {
+  padding: 20px;
+}
+
+.body-parts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.body-part-block {
+  padding: 20px;
+  text-align: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.body-part-block.selected {
+  background-color: #00bfa5;
+  color: white;
+}
+
+.save-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+/* .exercises-list {
+  margin-top: 30px;
+}
+
+.exercise-item {
+  margin-bottom: 20px;
+}
+
+.exercise-item img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 5px;
+} */
+
+.exercises-list {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.exercise-item {
+  flex: 1 1 calc(50% - 20px); /* Two columns with spacing */
+  margin-bottom: 20px;
+}
+
+.exercise-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.search-container {
+  margin-top: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.video-thumbnail {
+  margin-bottom: 20px;
+}
+
+.video-thumbnail a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.video-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.video-thumbnail p {
+  text-align: center;
+  margin-top: 5px;
+}
